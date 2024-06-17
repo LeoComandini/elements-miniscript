@@ -20,7 +20,7 @@ base64 = ["bitcoin/base64", "elements/base64"]
 
 [dependencies]
 bitcoin = "0.31.0"
-elements = "0.24.0"
+elements = { git = "https://github.com/ElementsProject/rust-elements", rev = "487f31b8d70d26689b48b81ee8f27d6803f84af2" }
 bitcoin-miniscript = { package = "miniscript", version = "11.0" }
 simplicity = { package = "simplicity-lang", version = "0.2.0", optional = true }
 
