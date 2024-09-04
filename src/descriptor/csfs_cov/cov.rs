@@ -227,7 +227,7 @@ impl<Ext: ParseableExt> LegacyCSFSCov<bitcoin::PublicKey, Ext> {
             Tk::Swap, Tk::Verify, Tk::Equal, Tk::Num(4), Tk::Size,  // item 1
             Tk::ToAltStack, Tk::Cat, Tk::Left, Tk::Num(1),
             Tk::Pick, Tk::Num(11), Tk::Pick, Tk::Num(11), Tk::Verify => {
-                Ok(bitcoin::PublicKey::from_slice(pk)?)
+                Ok(bitcoin::PublicKey::from_slice(pk).map_err(|e| bitcoin::key::ParsePublicKeyError::Encoding(e))?)
             },
             _ => Err(Error::CovError(CovError::BadCovDescriptor)),
         )

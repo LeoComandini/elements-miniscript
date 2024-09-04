@@ -33,7 +33,8 @@ pub trait ParseableKey: Sized + ToPublicKey + private::Sealed {
 
 impl ParseableKey for bitcoin::PublicKey {
     fn from_slice(sl: &[u8]) -> Result<Self, KeyParseError> {
-        bitcoin::PublicKey::from_slice(sl).map_err(KeyParseError::FullKeyParseError)
+        //bitcoin::PublicKey::from_slice(sl).map_err(KeyParseError::FullKeyParseError)
+        bitcoin::PublicKey::from_slice(sl).map_err(|e| KeyParseError::FullKeyParseError(bitcoin::key::ParsePublicKeyError::Encoding(e)))
     }
 }
 
@@ -48,7 +49,7 @@ impl ParseableKey for bitcoin::key::XOnlyPublicKey {
 #[derive(Debug, PartialEq, Eq)]
 pub enum KeyParseError {
     /// Bitcoin PublicKey parse error
-    FullKeyParseError(bitcoin::key::Error),
+    FullKeyParseError(bitcoin::key::ParsePublicKeyError),
     /// Xonly key parse Error
     XonlyKeyParseError(bitcoin::secp256k1::Error),
 }

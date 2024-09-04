@@ -291,7 +291,7 @@ pub enum Error {
     /// rust-bitcoin script error
     Script(script::Error),
     /// rust-bitcoin address error
-    AddrError(bitcoin::address::Error),
+    AddrError(bitcoin::address::ParseError),
     /// A `CHECKMULTISIG` opcode was preceded by a number > 20
     CmsTooManyKeys(u32),
     /// A tapscript multi_a cannot support more than MAX_BLOCK_WEIGHT/32 keys
@@ -319,7 +319,7 @@ pub enum Error {
     /// Parsed a miniscript but there were more script opcodes after it
     Trailing(String),
     /// Failed to parse a push as a public key
-    BadPubkey(bitcoin::key::Error),
+    BadPubkey(bitcoin::key::ParsePublicKeyError),
     /// Could not satisfy a script (fragment) because of a missing hash preimage
     MissingHash(sha256::Hash),
     /// Could not satisfy a script (fragment) because of a missing signature
@@ -430,14 +430,14 @@ impl From<elements::secp256k1_zkp::UpstreamError> for Error {
 }
 
 #[doc(hidden)]
-impl From<bitcoin::key::Error> for Error {
-    fn from(e: bitcoin::key::Error) -> Error {
+impl From<bitcoin::key::ParsePublicKeyError> for Error {
+    fn from(e: bitcoin::key::ParsePublicKeyError) -> Error {
         Error::BadPubkey(e)
     }
 }
 
-impl From<bitcoin::address::Error> for Error {
-    fn from(e: bitcoin::address::Error) -> Error {
+impl From<bitcoin::address::ParseError> for Error {
+    fn from(e: bitcoin::address::ParseError) -> Error {
         Error::AddrError(e)
     }
 }

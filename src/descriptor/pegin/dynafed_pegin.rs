@@ -39,6 +39,7 @@ use crate::{
 /// New Pegin Descriptor with Miniscript support
 /// Useful with dynamic federations
 #[derive(Clone, Ord, PartialOrd, Eq, PartialEq)]
+//pub struct Pegin<Pk: MiniscriptKey + bitcoin_miniscript::FromStrKey> {
 pub struct Pegin<Pk: MiniscriptKey> {
     /// The untweaked pegin bitcoin descriptor
     pub fed_desc: BtcDescriptor<Pk>,
@@ -247,7 +248,7 @@ impl<Pk: MiniscriptKey> Pegin<Pk> {
     {
         // tweaking does not change max satisfaction weight
         let w = self.fed_desc.max_weight_to_satisfy()?;
-        Ok(w)
+        Ok(w.to_wu() as usize)
     }
 
     /// Get the `scriptCode` of a transaction output.

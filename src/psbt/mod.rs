@@ -106,7 +106,7 @@ pub enum InputError {
     /// Get the secp Errors directly
     SecpErr(elements::secp256k1_zkp::Error),
     /// Key errors
-    KeyErr(bitcoin::key::Error),
+    KeyErr(bitcoin::key::ParsePublicKeyError),
     /// Error doing an interpreter-check on a finalized psbt
     Interpreter(interpreter::Error),
     /// Redeem script does not match the p2sh hash
@@ -257,8 +257,8 @@ impl From<elements::secp256k1_zkp::Error> for InputError {
 }
 
 #[doc(hidden)]
-impl From<bitcoin::key::Error> for InputError {
-    fn from(e: bitcoin::key::Error) -> InputError {
+impl From<bitcoin::key::ParsePublicKeyError> for InputError {
+    fn from(e: bitcoin::key::ParsePublicKeyError) -> InputError {
         InputError::KeyErr(e)
     }
 }

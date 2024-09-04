@@ -241,10 +241,10 @@ impl<Pk: MiniscriptKey> Liftable<Pk> for BtcPolicy<Pk> {
                 n.to_consensus_u32(),
             ))),
             BtcPolicy::Older(n) => Ok(Semantic::Older(Sequence(n.to_consensus_u32()))),
-            BtcPolicy::Threshold(k, ref subs) => {
+            BtcPolicy::Thresh(t) => {
                 let new_subs: Result<Vec<Semantic<Pk>>, _> =
-                    subs.iter().map(|sub| Liftable::lift(sub)).collect();
-                Ok(Semantic::Threshold(k, new_subs?))
+                    t.data().iter().map(|sub| Liftable::lift(sub.as_ref())).collect();
+                Ok(Semantic::Threshold(t.k(), new_subs?))
             }
         }
     }

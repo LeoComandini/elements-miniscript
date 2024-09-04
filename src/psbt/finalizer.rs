@@ -150,7 +150,7 @@ pub(super) fn get_descriptor(
         let pk_bytes = &script_pubkey.to_bytes();
         match bitcoin::PublicKey::from_slice(&pk_bytes[1..script_pubkey_len - 1]) {
             Ok(pk) => Ok(Descriptor::new_pk(pk)),
-            Err(e) => Err(InputError::from(e)),
+            Err(e) => Err(InputError::from(bitcoin::key::ParsePublicKeyError::Encoding(e))),
         }
     } else if script_pubkey.is_p2pkh() {
         // 2. `Pkh`: creates a `PkH` descriptor if partial_sigs has the corresponding pk

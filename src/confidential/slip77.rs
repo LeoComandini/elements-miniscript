@@ -92,9 +92,14 @@ impl MasterBlindingKey {
 }
 
 impl hex::FromHex for MasterBlindingKey {
-    type Err = hex::HexToArrayError;
+    type Error = hex::HexToArrayError;
 
-    fn from_byte_iter<I>(iter: I) -> Result<Self, Self::Err>
+    fn from_hex(s: &str) -> Result<Self, Self::Error> {
+        Ok(MasterBlindingKey(<[u8; 32]>::from_hex(s)?))
+    }
+
+    /*
+    fn from_byte_iter<I>(iter: I) -> Result<Self, Self::Error>
     where
         I: Iterator<Item = Result<u8, hex::HexToBytesError>>
             + ExactSizeIterator
@@ -102,6 +107,7 @@ impl hex::FromHex for MasterBlindingKey {
     {
         Ok(MasterBlindingKey(<[u8; 32]>::from_byte_iter(iter)?))
     }
+     * */
 }
 
 impl std::str::FromStr for MasterBlindingKey {
